@@ -3,193 +3,143 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="theme-color" content="#0f1412">
-<!-- VERSION 2026-09-16b -->
+<meta name="color-scheme" content="light only">
+<meta name="theme-color" content="#f1e7db">
+<!-- VERSION 2026-09-16c -->
 <title>夜跑紀錄</title>
 <style>
-:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 :root{
-  --bg:#f4f6f0; --card:#ffffff; --ink:#15201a; --mute:#6b7a70; --line:#dfe5da;
-  --acc:#5b8c00; --acc-ink:#ffffff; --cell:#e6ebe1; --cell-run:#5b8c00; --cell-run-ink:#f7ffe0;
-  --lock:#9aa79d;
-}
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){
-    --bg:#0f1412; --card:#171d1a; --ink:#e8ece6; --mute:#8c9a90; --line:#26302a;
-    --acc:#d4f542; --acc-ink:#0f1412; --cell:#222a25; --cell-run:#d4f542; --cell-run-ink:#0f1412;
-    --lock:#5a665e;
-  }
-}
-:root[data-theme="dark"]{
-  --bg:#0f1412; --card:#171d1a; --ink:#e8ece6; --mute:#8c9a90; --line:#26302a;
-  --acc:#d4f542; --acc-ink:#0f1412; --cell:#222a25; --cell-run:#d4f542; --cell-run-ink:#0f1412;
-  --lock:#5a665e;
+  color-scheme:light only;
+  padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+  --bg:#f1e7db; --card:#faf5ee; --ink:#3d2f26; --mute:#9a8676; --line:#e2d4c3;
+  --acc:#a8703f; --acc-ink:#fff8ef; --cell:#e6d9c8; --cell-run:#b9834f; --cell-run-ink:#fff8ef;
+  --lock:#bfae9c;
 }
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,"PingFang TC","Microsoft JhengHei",sans-serif;font-size:15px;line-height:1.55;-webkit-tap-highlight-color:transparent}
-.wrap{max-width:440px;margin:0 auto;padding-block:20px 48px;padding-inline:16px;display:flex;flex-direction:column;gap:22px}
-.disp{font-family:-apple-system,"PingFang TC","Microsoft JhengHei",sans-serif;font-variant-numeric:tabular-nums}
-header{display:flex;flex-direction:column;gap:4px}
-header h1{margin:0;font-size:34px;line-height:1;font-weight:700;letter-spacing:.01em;text-wrap:balance}
-header p{margin:0;color:var(--mute);font-size:14px}
+html,body{background:var(--bg)}
+body{margin:0;color:var(--ink);font-family:-apple-system,"PingFang TC","Microsoft JhengHei",sans-serif;font-size:16px;line-height:1.5;-webkit-tap-highlight-color:transparent}
+.wrap{max-width:440px;margin:0 auto;padding-block:28px 56px;padding-inline:20px;display:flex;flex-direction:column;gap:28px}
+h1{margin:0;font-size:32px;line-height:1.1;font-weight:700}
+h2{margin:0 0 10px;font-size:15px;font-weight:500;color:var(--mute);letter-spacing:.08em}
 
-.go{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;border:0;border-radius:14px;background:var(--acc);color:var(--acc-ink);font:700 30px/1 -apple-system,"PingFang TC","Microsoft JhengHei",sans-serif;padding:24px 16px;cursor:pointer;transition:transform .12s ease}
+.go{width:100%;border:0;border-radius:16px;background:var(--acc);color:var(--acc-ink);font:700 28px/1 -apple-system,"PingFang TC","Microsoft JhengHei",sans-serif;padding:26px 16px;cursor:pointer}
 .go:active{transform:scale(.985)}
-.go:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
 .go.done{background:var(--card);color:var(--ink);border:2px solid var(--acc)}
-.go small{font:500 15px/1 -apple-system,"PingFang TC","Microsoft JhengHei",sans-serif;opacity:.8}
+.off{width:100%;border:2px solid var(--line);border-radius:16px;background:var(--card);color:var(--ink);font:500 19px/1 -apple-system,"PingFang TC","Microsoft JhengHei",sans-serif;padding:18px 16px;cursor:pointer}
+.off:active{transform:scale(.985)}
 
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding-block:12px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding-block:14px}
 .stat{display:flex;flex-direction:column;align-items:center;gap:2px}
-.stat b{font:700 30px/1 -apple-system,"PingFang TC","Microsoft JhengHei",sans-serif;font-variant-numeric:tabular-nums}
-.stat b em{font-style:normal;font-size:16px;color:var(--mute);margin-left:2px}
-.stat span{font-size:12px;color:var(--mute);letter-spacing:.06em}
+.stat b{font-size:30px;line-height:1;font-weight:700;font-variant-numeric:tabular-nums}
+.stat b em{font-style:normal;font-size:15px;color:var(--mute);margin-left:2px}
+.stat span{font-size:13px;color:var(--mute)}
 
-.cal{display:flex;flex-direction:column;gap:8px}
-.cal .hd{display:flex;justify-content:space-between;align-items:baseline}
-.cal .hd h2{margin:0;font-size:13px;font-weight:500;color:var(--mute);letter-spacing:.08em}
-.cal .hd span{font-size:12px;color:var(--mute)}
-.wk{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
-.wk .dn{text-align:center;font-size:11px;color:var(--mute);letter-spacing:.05em}
-.cell{aspect-ratio:1;border-radius:9px;background:var(--cell);border:2px solid transparent;display:flex;align-items:center;justify-content:center;font:500 14px/1 -apple-system,"PingFang TC","Microsoft JhengHei",sans-serif;color:var(--mute);cursor:pointer;padding:0;transition:background .15s ease}
+.wk{display:grid;grid-template-columns:repeat(7,1fr);gap:7px}
+.dn{text-align:center;font-size:12px;color:var(--mute);margin-bottom:-2px}
+.cell{aspect-ratio:1;border-radius:10px;background:var(--cell);border:2px solid transparent;display:flex;align-items:center;justify-content:center;font-size:15px;color:var(--mute);cursor:pointer;padding:0;font-variant-numeric:tabular-nums}
 .cell.run{background:var(--cell-run);color:var(--cell-run-ink);font-weight:700}
 .cell.today{border-color:var(--acc);border-style:dashed}
 .cell.today.run{border-style:solid}
 .cell.future{background:transparent;border-color:var(--line);color:transparent;cursor:default}
-.cell.pre{background:transparent;border-color:transparent;color:transparent;cursor:default}
-.cell:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
-.rule{margin:0;font-size:13px;color:var(--mute)}
-.rule b{color:var(--ink);font-weight:500}
+.cell.pre{background:transparent;border-color:var(--line);color:transparent;cursor:default}
 
-.ladder{display:flex;flex-direction:column}
-.ladder h2{margin:0 0 6px;font-size:13px;font-weight:500;color:var(--mute);letter-spacing:.08em}
-.step{display:grid;grid-template-columns:64px 1fr;gap:12px;align-items:baseline;padding-block:10px;border-top:1px solid var(--line)}
-.step:last-child{border-bottom:1px solid var(--line)}
-.step .when{font:700 17px/1.2 -apple-system,"PingFang TC","Microsoft JhengHei",sans-serif;color:var(--acc);font-variant-numeric:tabular-nums}
-.step .what{font-size:15px;font-weight:500}
-.step .how{font-size:13px;color:var(--mute)}
-.step.locked .when,.step.locked .what{color:var(--lock)}
-.step.locked .how{color:var(--lock)}
-
-.night{display:flex;flex-direction:column;gap:8px}
-.night .hd{display:flex;justify-content:space-between;align-items:baseline}
-.night .hd h2{margin:0;font-size:13px;font-weight:500;color:var(--mute);letter-spacing:.08em}
-.night .hd span{font-size:12px;color:var(--mute)}
-.off{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;border:2px solid var(--line);border-radius:14px;background:var(--card);color:var(--ink);font:500 18px/1 -apple-system,"PingFang TC","Microsoft JhengHei",sans-serif;padding:16px;cursor:pointer}
-.off:active{transform:scale(.985)}
-.off:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
-.off small{font-size:13px;color:var(--mute)}
-.nights{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
-.nt{display:flex;flex-direction:column;align-items:center;gap:4px;border:0;background:transparent;padding:0;cursor:pointer;color:var(--ink)}
-.nt:focus-visible{outline:2px solid var(--ink);outline-offset:2px;border-radius:6px}
-.nt .d{font-size:11px;color:var(--mute)}
-.nt .t{width:100%;border-radius:8px;background:var(--cell);padding:8px 0;font-size:14px;font-weight:500;font-variant-numeric:tabular-nums;text-align:center}
-.nt .t.has{background:var(--card);border:1px solid var(--line)}
+.night{display:flex;flex-direction:column;gap:12px}
+.nights{display:grid;grid-template-columns:repeat(7,1fr);gap:7px}
+.nt{display:flex;flex-direction:column;align-items:center;gap:5px;border:0;background:transparent;padding:0;cursor:pointer;color:var(--ink)}
+.nt .d{font-size:12px;color:var(--mute)}
+.nt .t{width:100%;border-radius:9px;background:var(--cell);padding:9px 0;font-size:14px;font-weight:500;font-variant-numeric:tabular-nums;text-align:center;border:1px solid transparent}
+.nt .t.has{background:var(--card);border-color:var(--line)}
 .nt.today .t{border:1px dashed var(--acc)}
-.foot{font-size:12px;color:var(--mute);margin:0}
-@media (prefers-reduced-motion: reduce){.go,.cell{transition:none}}
+
+.step{display:grid;grid-template-columns:64px 1fr;gap:12px;align-items:baseline;padding-block:12px;border-top:1px solid var(--line)}
+.step:last-child{border-bottom:1px solid var(--line)}
+.step .when{font-size:17px;font-weight:700;color:var(--acc);font-variant-numeric:tabular-nums}
+.step .what{font-size:17px;font-weight:500}
+.step.locked .when,.step.locked .what{color:var(--lock)}
+button:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+@media (prefers-reduced-motion: reduce){.go:active,.off:active{transform:none}}
 </style>
 </head>
 <body>
-
 <div class="wrap">
-  <header>
-    <h1 class="disp">夜跑紀錄</h1>
-    <p>每週兩次，20 分鐘，慢到可以講話。</p>
-  </header>
+  <h1>夜跑紀錄</h1>
 
   <button class="go" id="go" type="button">今天跑了</button>
 
-  <div class="stats" aria-live="polite">
+  <div class="stats">
     <div class="stat"><b id="sWeek">0<em>/2</em></b><span>這週</span></div>
     <div class="stat"><b id="sTotal">0</b><span>總共</span></div>
     <div class="stat"><b id="sLast">—</b><span>上次跑</span></div>
   </div>
 
-  <section class="cal">
-    <div class="hd"><h2>最近四週</h2><span>點格子可以補記</span></div>
+  <section>
+    <h2>最近四週</h2>
     <div class="wk" id="dn"></div>
-    <div class="wk" id="grid"></div>
-    <p class="rule">只有一條規則：<b>不連續漏兩次。</b>北上的週末不算漏，週一回來照跑。</p>
+    <div class="wk" id="grid" style="margin-top:7px"></div>
   </section>
 
   <section class="night">
-    <div class="hd"><h2>晚上</h2><span>點格子可以改時間</span></div>
-    <button class="off" id="off" type="button">手機放客廳了 <small>按下去會記現在的時間</small></button>
+    <h2>晚上</h2>
+    <button class="off" id="off" type="button">手機放客廳了</button>
     <div class="nights" id="nights"></div>
-    <p class="rule">只記時間，不評分。<b>想睡再上床</b>，躺 20 分鐘還醒著就起來做點無聊的事，睏了再回去。</p>
   </section>
 
-  <section class="ladder">
+  <section>
     <h2>接下來</h2>
-    <div class="step">
-      <div class="when">現在</div>
-      <div><div class="what">跑步</div><div class="how">週一、週四下班後。跑完洗澡，講完電話手機放客廳。</div></div>
-    </div>
-    <div class="step locked">
-      <div class="when">10/13</div>
-      <div><div class="what">閱讀</div><div class="how">跑滿 6 次之後掛上來：早上起床先看 10 頁。</div></div>
-    </div>
-    <div class="step locked">
-      <div class="when">11/10</div>
-      <div><div class="what">寫東西</div><div class="how">閱讀站穩之後。一週一篇，長短不拘。</div></div>
-    </div>
+    <div class="step"><div class="when">現在</div><div class="what">跑步</div></div>
+    <div class="step locked"><div class="when">10/13</div><div class="what">閱讀</div></div>
+    <div class="step locked"><div class="when">11/10</div><div class="what">寫東西</div></div>
   </section>
-
-  <p class="foot">紀錄只存在這支手機的瀏覽器裡。早睡不用另外記，它會跟著跑步回來。</p>
 </div>
 
 <script>
 (function(){
-  var VERSION='2026-09-16b';
+  var VERSION='2026-09-16c';
   var KEY='run_log_v1';
   var START='2026-09-16';
-  var state={days:{}};
-  try{ var raw=localStorage.getItem(KEY); if(raw){ var o=JSON.parse(raw); if(o&&o.days) state=o; } }catch(e){}
+  var state={days:{},nights:{}};
+  try{ var raw=localStorage.getItem(KEY); if(raw){ var o=JSON.parse(raw); if(o&&o.days){ state=o; if(!state.nights) state.nights={}; } } }catch(e){}
   function save(){ try{ localStorage.setItem(KEY,JSON.stringify(state)); }catch(e){} }
 
   function pad(n){ return (n<10?'0':'')+n; }
   function ymd(d){ return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()); }
-  function today(){ var d=new Date(); return ymd(d); }
+  function today(){ return ymd(new Date()); }
   function parse(s){ var p=s.split('-'); return new Date(+p[0],+p[1]-1,+p[2]); }
   function addDays(s,n){ var d=parse(s); d.setDate(d.getDate()+n); return ymd(d); }
-  function dow(s){ var w=parse(s).getDay(); return (w+6)%7; } // 0=一 … 6=日
+  function dow(s){ return (parse(s).getDay()+6)%7; }
   function diffDays(a,b){ return Math.round((parse(b)-parse(a))/86400000); }
-
-  if(!state.nights) state.nights={};
   function nightKey(){ var d=new Date(); var k=ymd(d); return d.getHours()<12 ? addDays(k,-1) : k; }
   function hhmm(d){ return pad(d.getHours())+':'+pad(d.getMinutes()); }
+
+  var go=document.getElementById('go');
   var off=document.getElementById('off');
+  var grid=document.getElementById('grid');
+  var nights=document.getElementById('nights');
+  var dn=document.getElementById('dn');
+  ['一','二','三','四','五','六','日'].forEach(function(n){ var e=document.createElement('div'); e.className='dn'; e.textContent=n; dn.appendChild(e); });
+
+  function toggle(d){ if(state.days[d]) delete state.days[d]; else state.days[d]=1; save(); render(); }
+  go.addEventListener('click',function(){ toggle(today()); });
   off.addEventListener('click',function(){ state.nights[nightKey()]=hhmm(new Date()); save(); render(); });
+
   function editNight(d){
     var cur=state.nights[d]||'';
-    var v=prompt('那天晚上手機放客廳的時間（例如 00:15）。清空就是刪掉。',cur);
+    var v=prompt('那天晚上手機放客廳的時間（例如 00:15），清空就是刪掉',cur);
     if(v===null) return;
     v=v.trim();
-    if(!v){ delete state.nights[d]; }
-    else { var m=v.match(/^(\d{1,2})[:：.]?(\d{2})$/); if(!m){ alert('看不懂這個時間，用 00:15 這種寫法'); return; } state.nights[d]=pad(+m[1]%24)+':'+m[2]; }
+    if(!v){ delete state.nights[d]; save(); render(); return; }
+    var m=v.match(/^(\d{1,2})[:：.]?(\d{2})$/);
+    if(!m){ alert('看不懂這個時間，用 00:15 這種寫法'); return; }
+    state.nights[d]=pad(+m[1]%24)+':'+m[2];
     save(); render();
   }
-  var go=document.getElementById('go');
-  var grid=document.getElementById('grid');
-  var dn=document.getElementById('dn');
-  var names=['一','二','三','四','五','六','日'];
-  names.forEach(function(n){ var e=document.createElement('div'); e.className='dn'; e.textContent=n; dn.appendChild(e); });
-
-  function toggle(d){
-    if(state.days[d]) delete state.days[d]; else state.days[d]=1;
-    save(); render();
-  }
-  go.addEventListener('click',function(){ toggle(today()); });
 
   function render(){
     var t=today();
     var ran=!!state.days[t];
     go.className='go'+(ran?' done':'');
-    go.innerHTML=ran?'今天跑了 ✓ <small>再按一下取消</small>':'今天跑了';
+    go.textContent=ran?'今天跑了 ✓':'今天跑了';
 
-    // 這週（週一到週日）
     var monday=addDays(t,-dow(t));
     var week=0; for(var i=0;i<7;i++){ if(state.days[addDays(monday,i)]) week++; }
     var total=0, last=null;
@@ -200,14 +150,12 @@ header p{margin:0;color:var(--mute);font-size:14px}
     if(!last) sl.textContent='—';
     else { var n=diffDays(last,t); sl.innerHTML=n===0?'今天':(n+'<em>天前</em>'); }
 
-    // 四週格子：最後一列是這週
     grid.innerHTML='';
     var first=addDays(monday,-21);
     for(var k=0;k<28;k++){
       var d=addDays(first,k);
       var b=document.createElement('button'); b.type='button'; b.className='cell';
       b.textContent=+d.slice(8);
-      b.setAttribute('aria-label',d.slice(5).replace('-','/')+(state.days[d]?' 跑了':''));
       if(d>t){ b.classList.add('future'); b.disabled=true; }
       else if(d<START){ b.classList.add('pre'); b.disabled=true; }
       else {
@@ -217,16 +165,14 @@ header p{margin:0;color:var(--mute);font-size:14px}
       }
       grid.appendChild(b);
     }
-  }
-    // 最近七個晚上
-    var nights=document.getElementById('nights'); nights.innerHTML='';
+
+    nights.innerHTML='';
     var nk=nightKey();
     for(var j=6;j>=0;j--){
       var d2=addDays(nk,-j);
-      var nb=document.createElement('button'); nb.type='button'; nb.className='nt'+(d2===nk?' today':'');
       var v=state.nights[d2];
+      var nb=document.createElement('button'); nb.type='button'; nb.className='nt'+(d2===nk?' today':'');
       nb.innerHTML='<span class="d">'+(+d2.slice(8))+'</span><span class="t'+(v?' has':'')+'">'+(v||'—')+'</span>';
-      nb.setAttribute('aria-label',d2.slice(5).replace('-','/')+' 晚上'+(v?' '+v:' 沒記'));
       (function(dd){ nb.addEventListener('click',function(){ editNight(dd); }); })(d2);
       nights.appendChild(nb);
     }
