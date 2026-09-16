@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light only">
+<meta name="theme-color" content="#f1e7db">
+<!-- VERSION 2026-09-16a -->
+<title>自由書寫</title>
+<style>
+:root{
+  color-scheme:light only;
+  padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+  --bg:#f1e7db; --card:#faf5ee; --ink:#3d2f26; --mute:#9a8676; --line:#e2d4c3; --acc:#a8703f; --acc-ink:#fff8ef;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{background:var(--bg)}
+body{margin:0;color:var(--ink);font-family:-apple-system,"PingFang TC","Microsoft JhengHei",sans-serif;font-size:16px;line-height:1.5;-webkit-tap-highlight-color:transparent}
+.wrap{max-width:560px;margin:0 auto;padding-block:28px 56px;padding-inline:20px;display:flex;flex-direction:column;gap:28px}
+h1{margin:0;font-size:32px;line-height:1.1;font-weight:700}
+h2{margin:0 0 10px;font-size:15px;font-weight:500;color:var(--mute);letter-spacing:.08em}
+.head{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+.head .n{font-size:15px;color:var(--mute);font-variant-numeric:tabular-nums}
+.date{font-size:15px;color:var(--mute);margin-bottom:8px}
+textarea{width:100%;min-height:48vh;border:1px solid var(--line);border-radius:16px;background:var(--card);color:var(--ink);font:400 17px/1.75 -apple-system,"PingFang TC","Microsoft JhengHei",sans-serif;padding:18px;resize:none;outline:none;-webkit-appearance:none}
+textarea:focus{border-color:var(--acc)}
+textarea::placeholder{color:var(--mute);opacity:.7}
+.past{display:flex;flex-direction:column}
+.ent{border-top:1px solid var(--line)}
+.ent:last-child{border-bottom:1px solid var(--line)}
+.ent button{width:100%;display:grid;grid-template-columns:64px 1fr;gap:12px;align-items:baseline;text-align:left;border:0;background:transparent;padding:12px 0;color:var(--ink);font:inherit;cursor:pointer}
+.ent .d{font-size:15px;color:var(--mute);font-variant-numeric:tabular-nums}
+.ent .p{font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ent .full{display:none;white-space:pre-wrap;padding:0 0 16px 76px;font-size:16px;line-height:1.75}
+.ent.open .full{display:block}
+.ent.open .p{white-space:normal;overflow:visible;color:var(--mute)}
+.bk{align-self:center;border:1px solid var(--line);border-radius:12px;background:transparent;color:var(--mute);font:500 15px/1 -apple-system,"PingFang TC","Microsoft JhengHei",sans-serif;padding:12px 20px;cursor:pointer}
+.bk:active{transform:scale(.98)}
+button:focus-visible,textarea:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head"><h1>自由書寫</h1><span class="n" id="count"></span></div>
+
+  <section>
+    <div class="date" id="date"></div>
+    <textarea id="ta" placeholder="想到什麼寫什麼。不整理、不分段、不給人看。" autocomplete="off" autocorrect="off" spellcheck="false"></textarea>
+  </section>
+
+  <section class="past" id="past" hidden>
+    <h2>之前</h2>
+    <div id="list"></div>
+  </section>
+
+  <button class="bk" id="bk" type="button">備份全部</button>
+</div>
+
+<script>
+(function(){
+  var VERSION='2026-09-16a';
+  var KEY='write_log_v1';
+  var state={days:{}};
+  try{ var raw=localStorage.getItem(KEY); if(raw){ var o=JSON.parse(raw); if(o&&o.days) state=o; } }catch(e){}
+  function save(){ try{ localStorage.setItem(KEY,JSON.stringify(state)); }catch(e){} }
+
+  function pad(n){ return (n<10?'0':'')+n; }
+  function ymd(d){ return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()); }
+  function parse(s){ var p=s.split('-'); return new Date(+p[0],+p[1]-1,+p[2]); }
+  function addDays(s,n){ var d=parse(s); d.setDate(d.getDate()+n); return ymd(d); }
+  function key(){ var d=new Date(); var k=ymd(d); return d.getHours()<12 ? addDays(k,-1) : k; }
+  var W=['日','一','二','三','四','五','六'];
+  function label(s){ var d=parse(s); return (d.getMonth()+1)+'/'+d.getDate()+'　週'+W[d.getDay()]; }
+  function short(s){ var d=parse(s); return (d.getMonth()+1)+'/'+d.getDate(); }
+
+  var ta=document.getElementById('ta');
+  var K=key();
+  document.getElementById('date').textContent=label(K);
+  ta.value=state.days[K]||'';
+
+  ta.addEventListener('input',function(){
+    var v=ta.value;
+    if(v.trim()) state.days[K]=v; else delete state.days[K];
+    save(); count();
+  });
+
+  function count(){
+    var n=Object.keys(state.days).length;
+    document.getElementById('count').textContent=n?('第 '+n+' 篇'):'';
+  }
+
+  function renderPast(){
+    var list=document.getElementById('list'); list.innerHTML='';
+    var ds=Object.keys(state.days).filter(function(d){ return d!==K; }).sort().reverse();
+    document.getElementById('past').hidden=!ds.length;
+    ds.forEach(function(d){
+      var t=state.days[d];
+      var e=document.createElement('div'); e.className='ent';
+      var b=document.createElement('button'); b.type='button';
+      b.innerHTML='<span class="d">'+short(d)+'</span><span class="p"></span>';
+      b.querySelector('.p').textContent=t.split('\n')[0];
+      var f=document.createElement('div'); f.className='full'; f.textContent=t;
+      b.addEventListener('click',function(){ e.classList.toggle('open'); });
+      e.appendChild(b); e.appendChild(f); list.appendChild(e);
+    });
+  }
+
+  document.getElementById('bk').addEventListener('click',function(){
+    var ds=Object.keys(state.days).sort();
+    if(!ds.length){ alert('還沒有東西可以備份'); return; }
+    var txt=ds.map(function(d){ return '## '+label(d)+'\n\n'+state.days[d]; }).join('\n\n\n');
+    if(navigator.share){ navigator.share({title:'自由書寫 備份',text:txt}).catch(function(){}); return; }
+    if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(txt).then(function(){ alert('已複製全部內容，貼到任何地方存起來'); }); return; }
+    prompt('全選複製這段存起來',txt);
+  });
+
+  count(); renderPast();
+})();
+</script>
+</body>
+</html>
