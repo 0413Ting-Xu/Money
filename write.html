@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="light only">
 <meta name="theme-color" content="#f1e7db">
-<!-- VERSION 2026-09-16a -->
+<!-- VERSION 2026-09-16b -->
 <title>自由書寫</title>
 <style>
 :root{
@@ -46,7 +46,7 @@ button:focus-visible,textarea:focus-visible{outline:2px solid var(--ink);outline
 
   <section>
     <div class="date" id="date"></div>
-    <textarea id="ta" placeholder="想到什麼寫什麼。不整理、不分段、不給人看。" autocomplete="off" autocorrect="off" spellcheck="false"></textarea>
+    <textarea id="ta" placeholder="想到什麼寫什麼" autocomplete="off" autocorrect="off" spellcheck="false"></textarea>
   </section>
 
   <section class="past" id="past" hidden>
@@ -59,7 +59,7 @@ button:focus-visible,textarea:focus-visible{outline:2px solid var(--ink);outline
 
 <script>
 (function(){
-  var VERSION='2026-09-16a';
+  var VERSION='2026-09-16b';
   var KEY='write_log_v1';
   var state={days:{}};
   try{ var raw=localStorage.getItem(KEY); if(raw){ var o=JSON.parse(raw); if(o&&o.days) state=o; } }catch(e){}
